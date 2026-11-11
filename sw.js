@@ -1,4 +1,4 @@
-const C='ledra-v8',F=['./','./index.html','./manifest.json','./config.js','./cloud.js','./icon-192.png','./icon-512.png'];
+const C='ledra-v9',F=['./','./index.html','./manifest.json','./config.js','./cloud.js','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(C).then(c=>Promise.allSettled(F.map(u=>c.add(u)))));
   self.skipWaiting();
