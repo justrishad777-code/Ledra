@@ -359,8 +359,7 @@ document.addEventListener('click',e=>{
   }
   else if(a==='theme'){lset('hk_theme',b.dataset.t);drawMenu()}
   else if(a==='txtimp'){
-    const lines=($('#ti').value||'').split('
-').map(l=>l.trim()).filter(Boolean);let n=0,bad=0;
+    const lines=($('#ti').value||'').split(/\r?\n/).map(l=>l.trim()).filter(Boolean);let n=0,bad=0;
     lines.forEach((l,i)=>{
       const m=l.match(/^(.*?)[\s,;:]+([+−-]?\s*\d[\d,]*(?:\.\d+)?)\s*$/);
       if(!m||!m[1].trim()){bad++;return}
