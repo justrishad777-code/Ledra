@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fdf3ec">
+<link rel="manifest" href="manifest.json">
+<title>Ledra</title>
+<style>
+:root{--bg:#fdf3ec;--card:#fff;--tx:#3a3350;--mu:#9a90a8;--bd:#f1e6df;--sh:rgba(150,100,70,.12);--rpb:#d4f1e1;--rpt:#1f7a55;--rob:#ffdbe0;--rot:#c0405a;--nb:#fff0bd;--nt:#6b4e00;--ink:#3a3350;--on:#fff;--inp:#fbefe6;--g1:#e8845f;--gr:#1f7a55;--rd:#c0405a;--avb:90%;--avt:32%;--font:ui-rounded,"SF Pro Rounded",Nunito,"Segoe UI",system-ui,sans-serif;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="mint"]{--bg:#eef8f2;--tx:#20413a;--mu:#7f9a92;--bd:#dcebe3;--sh:rgba(40,100,80,.12);--rpb:#cdeedd;--rpt:#1b7a52;--nb:#d9ecff;--nt:#1d4a7a;--ink:#20413a;--inp:#e4f2ea;--g1:#3aa57c}
+:root[data-theme="sky"]{--bg:#eef5fd;--tx:#26364f;--mu:#8498b3;--bd:#dde8f5;--sh:rgba(60,100,170,.12);--nb:#dbe8ff;--nt:#24478a;--ink:#26364f;--inp:#e4eefa;--g1:#4a86e8}
+:root[data-theme="lilac"]{--bg:#f5f0fc;--tx:#3b3057;--mu:#9a8fb5;--bd:#e9e0f5;--sh:rgba(100,70,170,.12);--nb:#e6dcfb;--nt:#503a8f;--ink:#3b3057;--inp:#ede6f8;--g1:#8d6ee0}
+:root[data-theme="night"]{--bg:#1e1b2b;--card:#2a2639;--tx:#efeaff;--mu:#9d96b5;--bd:#3a3550;--sh:rgba(0,0,0,.35);--rpb:#1f4a3b;--rpt:#7fe0b3;--rob:#523040;--rot:#ff9db0;--nb:#3c3466;--nt:#d9ceff;--ink:#d9ceff;--on:#1e1b2b;--inp:#332e47;--g1:#b49cff;--gr:#7fe0b3;--rd:#ff9db0;--avb:30%;--avt:82%;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--tx);font:15px/1.4 var(--font)}
+main{max-width:520px;margin:0 auto;padding:14px 18px 110px;position:relative}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+h1{order:1;font:800 26px var(--font);letter-spacing:-.01em;margin:0}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--g1);margin-left:4px}
+.tear{position:fixed;z-index:6;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:max(18px,calc(50% - 242px));width:56px;height:56px;border:0;border-radius:50%;background:var(--ink);color:var(--on);font-size:22px;box-shadow:0 8px 22px var(--sh)}
+small{display:block;color:var(--mu);font:700 11px var(--font);letter-spacing:.1em;text-transform:uppercase}
+.glass{background:var(--card);border-radius:22px;padding:14px;box-shadow:0 6px 20px var(--sh)}
+.menu{position:fixed;z-index:5;bottom:calc(86px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:calc(100% - 36px);max-width:484px;background:var(--card);border-radius:26px;box-shadow:0 18px 50px var(--sh),0 0 0 1px var(--bd);padding:8px;max-height:calc(100vh - 160px);overflow:auto}
+.mrow{display:flex;align-items:center;gap:12px;width:100%;padding:9px 10px;border:0;border-radius:18px;background:transparent;color:var(--tx);font:600 16px var(--font);text-align:left}
+.mrow:active{background:var(--inp)}
+.ico{flex:none;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-style:normal;background:var(--inp)}
+.menu .mrow:nth-child(3n+1) .ico{background:var(--rpb)}
+.menu .mrow:nth-child(3n+2) .ico{background:var(--nb)}
+.menu .mrow:nth-child(3n) .ico{background:var(--rob)}
+.mpad{padding:8px 6px}
+.swr{display:flex;gap:12px;justify-content:center;padding:8px 6px 10px}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid var(--card);padding:0;box-shadow:0 0 0 1px var(--bd)}
+.sw.on{box-shadow:0 0 0 2px var(--tx)}
+.glass.hero3{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:8px;padding:0;background:transparent;box-shadow:none;text-align:center}
+.hero3>div{border-radius:22px;padding:16px 4px;box-shadow:0 6px 18px var(--sh);min-width:0}
+.hero3 .side:first-child{background:var(--rpb);color:var(--rpt)}
+.hero3 .side:last-child{background:var(--rob);color:var(--rot)}
+.hero3 .mid{background:var(--nb);color:var(--nt);padding:20px 4px}
+.hero3 small{color:inherit;opacity:.7}
+.big{font:800 clamp(17px,5.6vw,27px) var(--font);margin-top:6px;overflow-wrap:anywhere;color:inherit}
+.hero3 .side b{display:block;font:800 clamp(12px,3.9vw,17px) var(--font);margin-top:6px;overflow-wrap:anywhere}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.duo .stat:first-child{background:var(--rpb)}.duo .stat:last-child{background:var(--rob)}
+.stat b{display:block;font:800 20px var(--font);margin-top:4px}
+.ok{color:var(--gr)}.bad{color:var(--rd)}
+input,select,textarea{width:100%;padding:12px 14px;border-radius:16px;border:1.5px solid transparent;background:var(--card);color:var(--tx);font:inherit;min-width:0;box-shadow:0 2px 10px var(--sh)}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--g1)}
+textarea{min-height:160px}
+.add{display:grid;grid-template-columns:1.5fr 1fr;gap:10px;margin-bottom:16px}
+.full{grid-column:1/3}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{padding:13px;border:0;border-radius:999px;background:var(--ink);color:var(--on);font:700 15px var(--font);width:100%}
+.btn.alt{background:var(--card);color:var(--tx);box-shadow:0 2px 10px var(--sh)}
+.btn.pl{background:var(--rpb);color:var(--rpt)}.btn.mi{background:var(--rob);color:var(--rot)}
+label.btn{display:block;text-align:center}
+.list{padding:4px 14px}
+.row{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--bd)}
+.row:first-child{border-top:0}
+.av{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:800 15px var(--font);font-style:normal;background:hsl(var(--h) 75% var(--avb));color:hsl(var(--h) 45% var(--avt))}
+.row .nm,.crow .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+.row>b{padding:5px 12px;border-radius:999px;font:800 14px var(--font);white-space:nowrap}
+.row>b.ok{background:var(--rpb)}.row>b.bad{background:var(--rob)}
+.row small{display:inline;margin-left:6px;letter-spacing:.04em}
+.row .nm small.blk,.crow small.blk{display:block;margin:2px 0 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;text-transform:none;letter-spacing:0}
+.pc{cursor:pointer}
+.x{border:0;background:var(--inp);color:var(--mu);border-radius:999px;padding:6px 12px;font:600 14px var(--font)}
+.x.arm{background:var(--rob);color:var(--rot)}
+.dr{display:grid;grid-template-columns:1.3fr 1fr 70px 38px;gap:6px;margin-bottom:8px}
+.msg{background:var(--nb);color:var(--nt);padding:8px 16px;border-radius:999px;margin:0 auto 14px;width:fit-content;max-width:100%;font-weight:700;text-align:center}
+.empty{text-align:center;color:var(--mu);padding:28px 0}
+.ck{display:grid;grid-template-columns:1fr 1.2fr;gap:8px;align-items:center;padding:12px 0;border-top:1px solid var(--bd)}
+.ck:first-child{border-top:0}
+.ck .st{grid-column:1/3;font-size:13px;font-weight:600}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.top h2{margin:0;font:800 22px var(--font)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+.glass.col{padding:0 14px 6px;overflow:hidden}
+.ch{margin:0 -14px 4px;padding:12px 14px}
+.cols .col:first-child .ch{background:var(--rpb);color:var(--rpt)}
+.cols .col:last-child .ch{background:var(--rob);color:var(--rot)}
+.ch small{color:inherit;opacity:.7}
+.ch b{display:block;font:800 19px var(--font);margin-top:3px;overflow-wrap:anywhere;color:inherit}
+.crow{padding:11px 0;border-top:1px solid var(--bd)}
+.ch+.crow{border-top:0}
+.crow .nm{display:block}
+.crow b{display:block;font:800 15px var(--font);margin-top:2px;overflow-wrap:anywhere}
+.cashcard{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding:14px 18px}
+.cashcard b{font:800 18px var(--font)}
+</style>
+</head>
+<body>
+<main>
+<header><button class="tear" data-a="menu" aria-label="Menu">☰</button><h1>Ledra<i class="dot"></i></h1></header>
+<div id="app"></div>
+</main>
+<script src="config.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const money=n=>'Tk '+Number(n).toLocaleString('en-IN');
+const today=()=>new Date().toISOString().slice(0,10);
+const ls=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const lset=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+let txs=[],tab='H',draft=[],msg='',arm=null,menu=false,open=null,ck={},ckExtra=[];
+const key=n=>String(n).trim().toLowerCase();
+if(ls('hk2')===null){
+  try{txs=JSON.parse(ls('hk1')||'[]').map(i=>({id:i.id,name:i.name,amt:i.type==='RO'?-i.amt:i.amt,note:i.note||'',date:i.date||today()}))}catch(e){}
+  lset('hk2',JSON.stringify(txs));
+}else{try{txs=JSON.parse(ls('hk2'))||[]}catch(e){}}
+let delIds=[];try{delIds=JSON.parse(ls('hk_del')||'[]')}catch(e){}
+let cash0=null,cashT=0;try{const o=JSON.parse(ls('hk_open')||'null');if(o){cash0=o.v;cashT=o.t}}catch(e){}
+const saveOpen=()=>lset('hk_open',JSON.stringify(cash0==null?null:{v:cash0,t:cashT}));
+const cashNow=()=>(cash0||0)-txs.reduce((a,t)=>a+t.amt,0);
+const sg=n=>(n<0?'−':'')+money(Math.abs(n));
+const save=()=>{lset('hk2',JSON.stringify(txs));lset('hk_del',JSON.stringify(delIds));saveOpen();if(window.ledraCloud)window.ledraCloud.queue()};
+function people(){const m={};txs.forEach(t=>{const k=key(t.name);const p=m[k]=m[k]||{k,name:t.name,bal:0,plus:0,minus:0,rows:[]};p.bal+=t.amt;if(t.amt>0)p.plus+=t.amt;else p.minus-=t.amt;p.rows.push(t)});return Object.values(m)}
+const hasC=()=>typeof window.claude!=='undefined'&&window.claude&&window.claude.use;
+
+const PROMPT=`This is a photo of a personal accounts ledger (handwritten or printed, may be in English, Bengali or mixed, may use Bengali digits). Extract every entry. Return ONLY a JSON array, no other text. Each item: {"name": person or party name, "type": "RP" or "RO", "amount": number in English digits, "note": short note or "", "date": date as written or ""}. type "RP" = the writer will RECEIVE money from that person (words like pabo, baki, due from them, lent). type "RO" = the writer must PAY that person (words like debo, dhar, owed to them, borrowed). If unclear choose "RP" and put "?" in note. Skip totals and headings.`;
+
+async function shrink(f){
+  const bm=await createImageBitmap(f);
+  const k=Math.min(1,2000/Math.max(bm.width,bm.height));
+  const c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);
+  c.getContext('2d').drawImage(bm,0,0,c.width,c.height);
+  return new Promise(r=>c.toBlob(r,'image/jpeg',0.85));
+}
+const b64=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(String(f.result).split(',')[1]);f.readAsDataURL(b)});
+async function readAI(imgs){
+  let sample=null;
+  if(hasC()){try{sample=await claude.use('sample')}catch(e){}}
+  if(sample)return sample.json(PROMPT,{images:imgs});
+  const key=ls('hk_key');
+  if(!key)throw {code:'nokey'};
+  const content=[];
+  for(const b of imgs)content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:await b64(b)}});
+  content.push({type:'text',text:PROMPT});
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:8000,messages:[{role:'user',content}]})});
+  if(!r.ok)throw {code:'api'};
+  const j=await r.json();
+  return JSON.parse(j.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
+}
+async function scan(files){
+  msg='Reading…';draw();
+  try{
+    const imgs=[];for(const f of files)imgs.push(await shrink(f));
+    const r=await readAI(imgs);
+    const arr=Array.isArray(r)?r:(r&&r.entries)||[];
+    draft=arr.map(e=>({name:String(e.name||'').trim(),type:e.type==='RO'?'RO':'RP',amt:Number(e.amount)||0,note:e.note||'',date:e.date||''}));
+    msg=draft.length?draft.length+' found. Check, then save.':'Nothing found. Try a clearer photo.';
+  }catch(e){
+    msg=e&&e.code==='nokey'?'Add API key in menu, or enter manually.':e&&e.code==='not_granted'?'Permission denied.':'Could not read. Check internet and key.';
+  }
+  draw();
+}
+async function exportData(){
+  const data=JSON.stringify({v:2,txs,open:cash0},null,1),name='ledra-backup-'+today()+'.json';
+  try{if(hasC()){const d=await claude.use('downloads');if(d){await d.save({filename:name,data});return}}}catch(e){}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));a.download=name;a.click();
+}
+async function importData(file){
+  try{
+    const j=JSON.parse(await file.text());
+    const have=new Set(txs.map(t=>t.id));let n=0;
+    const add=t=>{if(t&&t.name&&t.amt&&!have.has(t.id)){have.add(t.id);txs.push({id:t.id||Date.now()+n,name:String(t.name),amt:Number(t.amt),note:t.note||'',date:t.date||today()});n++}};
+    (j.txs||[]).forEach(add);
+    (j.items||[]).forEach(i=>add({id:i.id,name:i.name,amt:i.type==='RO'?-i.amt:i.amt,note:i.note,date:i.date}));
+    if(j.open!=null&&cash0==null){cash0=Number(j.open)||0;cashT=Date.now()}
+    save();msg=n+' restored.';
+  }catch(e){msg='Could not read backup file.'}
+  menu=false;draw();
+}
+const sm=n=>(n>0?'+':n<0?'−':'')+money(Math.abs(n));
+const bcls=b=>b>=0?'ok':'bad';
+function due(){
+  let c=null;try{c=JSON.parse(ls('hk_chk')||'null')}catch(e){}
+  const lim=(ls('hk_per')||'W')==='W'?7:30;
+  return !c||(Date.now()-Date.parse(c.date))/864e5>=lim;
+}
+const formBtns=`<div class="full two"><button class="btn pl" data-a="add" data-s="1">+ Gave</button><button class="btn mi" data-a="add" data-s="-1">− Got</button></div>`;
+function newView(){
+  const names=people().map(p=>`<option value="${esc(p.name)}">`).join('');
+  return `<div class="add"><input id="n" list="nl" placeholder="Name"><input id="a" type="number" inputmode="decimal" placeholder="Amount"><input class="full" id="o" placeholder="Note"><datalist id="nl">${names}</datalist>${formBtns}</div>`;
+}
+function peopleView(){
+  const ps=people();
+  const L=ps.filter(p=>p.bal>=0).sort((a,b)=>b.bal-a.bal),R=ps.filter(p=>p.bal<0).sort((a,b)=>a.bal-b.bal);
+  const row=(p,c)=>`<div class="crow pc" data-a="open" data-k="${esc(p.k)}"><span class="nm">${esc(p.name)}</span><b class="${c}">${money(Math.abs(p.bal))}</b></div>`;
+  const col=(t,c,a)=>`<div class="glass col"><div class="ch"><small>${t}</small><b class="${c}">${money(a.reduce((s,p)=>s+Math.abs(p.bal),0))}</b></div>${a.length?a.map(p=>row(p,c)).join(''):'<div class="empty" style="padding:14px 0">—</div>'}</div>`;
+  return `<div class="cols">${col('RP','ok',L)}${col('RO','bad',R)}</div>`;
+}
+const THEMES={peach:['#fdf3ec','#e8845f'],mint:['#eef8f2','#3aa57c'],sky:['#eef5fd','#4a86e8'],lilac:['#f5f0fc','#8d6ee0'],night:['#1e1b2b','#b49cff']};
+function applyTheme(){
+  const t=THEMES[ls('hk_theme')]?ls('hk_theme'):'peach';
+  document.documentElement.setAttribute('data-theme',t);
+  const m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',THEMES[t][0]);
+}
+const hue=n=>{let h=0;for(const c of String(n).toLowerCase())h=(h*31+c.codePointAt(0))%360;return h};
+const histRows=a=>a.map(t=>`<div class="row"><i class="av" style="--h:${hue(t.name)}">${esc(([...String(t.name).trim()][0]||'?').toUpperCase())}</i><span class="nm">${esc(t.name)}<small class="blk">${esc([t.note,t.date].filter(Boolean).join(' · '))}</small></span><b class="${t.amt>0?'ok':'bad'}">${sm(t.amt)}</b></div>`).join('');
+function homeView(p,o,n){
+  const more=txs.filter(t=>t.amt>0).length>5||txs.filter(t=>t.amt<0).length>5;
+  return `<div class="glass hero3"><div class="side"><small>RP</small><b class="ok">${money(p)}</b></div><div class="mid"><small>Net</small><div class="big">${n<0?'−':''}${money(Math.abs(n))}</div></div><div class="side"><small>RO</small><b class="bad">${money(o)}</b></div></div><div class="glass cashcard pc" data-a="tab" data-t="M"><small>Cash</small><b>${sg(cashNow())}</b></div><div style="margin-top:14px">${histView(5)}</div>${more?'<button class="x" style="margin:12px auto 0;display:block" data-a="tab" data-t="Y">All ›</button>':''}`;
+}
+function histView(n){
+  const all=[...txs].sort((a,b)=>b.id-a.id),L=all.filter(t=>t.amt>0),R=all.filter(t=>t.amt<0);
+  const row=(t,c)=>`<div class="crow"><span class="nm">${esc(t.name)}</span><small class="blk">${esc([t.note,t.date].filter(Boolean).join(' · '))}</small><b class="${c}">${money(Math.abs(t.amt))}</b></div>`;
+  const col=(h,c,a)=>`<div class="glass col"><div class="ch"><small>${h}</small><b class="${c}">${money(a.reduce((s,t)=>s+Math.abs(t.amt),0))}</b></div>${a.length?(n?a.slice(0,n):a).map(t=>row(t,c)).join(''):'<div class="empty" style="padding:14px 0">—</div>'}</div>`;
+  return `<div class="cols">${col('RP','ok',L)}${col('RO','bad',R)}</div>`;
+}
+function detailView(){
+  const p=people().find(x=>x.k===open);
+  if(!p){open=null;return peopleView()}
+  const rows=[...p.rows].sort((a,b)=>b.id-a.id).map(t=>`<div class="row"><span class="nm">${esc(t.note||'—')}<small>${esc(t.date||'')}</small></span><b class="${t.amt>0?'ok':'bad'}">${sm(t.amt)}</b><button class="x${arm===t.id?' arm':''}" data-a="del" data-id="${t.id}">${arm===t.id?'Sure?':'✕'}</button></div>`).join('');
+  return `<div class="top"><button class="x" data-a="back">←</button><h2>${esc(p.name)}</h2><b class="${bcls(p.bal)}" style="font-size:20px">${sm(p.bal)}</b></div><div class="duo" style="margin:0 0 14px"><div class="glass stat"><small>+</small><b class="ok">${money(p.plus)}</b></div><div class="glass stat"><small>−</small><b class="bad">${money(p.minus)}</b></div></div><div class="add"><input id="a" type="number" inputmode="decimal" placeholder="Amount"><input id="o" placeholder="Note">${formBtns}</div><div class="glass list">${rows}</div>`;
+}
+function scanView(){
+  const d=draft.map((e,i)=>`<div class="dr"><input data-f="name" data-i="${i}" value="${esc(e.name)}"><input data-f="amt" data-i="${i}" type="number" inputmode="decimal" value="${e.amt}"><select data-f="type" data-i="${i}"><option value="RP"${e.type==='RP'?' selected':''}>RP</option><option value="RO"${e.type==='RO'?' selected':''}>RO</option></select><button class="x" data-a="dx" data-i="${i}">×</button></div>`).join('');
+  return `<div class="glass"><input id="f" type="file" accept="image/*" multiple><button class="btn" style="margin-top:10px" data-a="scan">Read photo</button></div><div style="margin-top:12px">${msg?`<div class="msg">${esc(msg)}</div>`:''}${draft.length?`${d}<button class="btn" data-a="commit">Save all</button>`:''}</div>`;
+}
+let ckRows=[];
+function checkView(){
+  const per=ls('hk_per')||'W';let c=null;try{c=JSON.parse(ls('hk_chk')||'null')}catch(e){}
+  ckRows=people().map(p=>p.name);
+  ckExtra.forEach(n=>{if(!ckRows.some(x=>key(x)===key(n)))ckRows.push(n)});
+  const rows=ckRows.map((n,i)=>`<div class="ck"><span>${esc(n)}</span><input data-ck="${i}" type="number" inputmode="decimal" step="any" placeholder="Your balance" value="${esc(ck[key(n)]==null?'':ck[key(n)])}"><span class="st" id="st${i}"></span></div>`).join('');
+  return `<div class="two" style="margin-bottom:12px"><select data-per><option value="W"${per==='W'?' selected':''}>Weekly</option><option value="M"${per==='M'?' selected':''}>Monthly</option></select><div class="glass" style="padding:10px;text-align:center;font-size:13px;color:var(--mu)">${c?`Last ${esc(c.date.slice(0,10))} · ✓ ${c.ok} · ✕ ${c.bad}`:'No check yet'}</div></div>${rows?`<div class="glass list">${rows}</div>`:'<div class="empty">No entries yet</div>'}<div class="add" style="margin-top:12px"><input id="xn" placeholder="Missing name"><button class="btn alt" data-a="ckadd">Add</button></div><div class="glass" id="cksum" style="text-align:center"></div><div class="two" style="margin-top:12px"><button class="btn" data-a="cksave">Save check</button><button class="btn alt" data-a="ckclear">Clear</button></div>`;
+}
+function ckPaint(){
+  let ok=0,bad=0,em=0;const ps=people();
+  ckRows.forEach((n,i)=>{
+    const v=ck[key(n)],el=$('#st'+i);if(!el)return;
+    if(v==null||v===''){em++;el.className='st';el.textContent='';return}
+    const bal=(ps.find(p=>p.k===key(n))||{bal:0}).bal,d=Number(v)-bal;
+    if(Math.abs(d)<0.005){ok++;el.className='st ok';el.textContent='✓ Match'}
+    else{bad++;el.className='st bad';el.textContent=`✕ Diff ${sm(d)} · App ${sm(bal)}`}
+  });
+  const s=$('#cksum');
+  if(s){s.dataset.ok=ok;s.dataset.bad=bad;s.innerHTML=`<span class="ok">✓ ${ok}</span> &nbsp; <span class="bad">✕ ${bad}</span> &nbsp; <span style="color:var(--mu)">– ${em}</span>`+(bad===0&&ok>0&&em===0?' &nbsp; 🎉':'')}
+}
+function importView(){
+  return `<textarea id="ti" placeholder="Rahim 500&#10;Karim -200"></textarea><button class="btn" style="margin-top:10px" data-a="txtimp">Add</button>`;
+}
+function cashView(){
+  return `<div class="glass" style="text-align:center"><small>Cash now</small><div class="big">${sg(cashNow())}</div></div><div class="add" style="margin-top:14px"><input class="full" id="cs" type="number" inputmode="decimal" step="any" placeholder="Set cash amount"><button class="btn full" data-a="setcash">Save</button></div>`;
+}
+function accountView(){
+  const c=window.ledraCloud;
+  if(!c)return '<div class="empty">Cloud is not set up</div>';
+  if(c.user)return `<div class="glass" style="text-align:center"><small>Signed in</small><div style="font-weight:700;margin:4px 0 14px;overflow-wrap:anywhere">${esc(c.user.email)}</div><div class="two"><button class="btn" data-a="syncnow">Sync now</button><button class="btn alt" data-a="signout">Sign out</button></div></div>`;
+  return `<div class="add"><input class="full" id="em" type="email" placeholder="Email" autocomplete="username"><input class="full" id="pw" type="password" placeholder="Password" autocomplete="current-password"><button class="btn full" data-a="signin">Sign in</button><button class="btn alt full" data-a="signup">Create account</button></div>`;
+}
+function menuView(){
+  const cur=ls('hk_theme')||'peach';
+  const it=(t,ic,l)=>`<button class="mrow" data-a="tab" data-t="${t}"><i class="ico">${ic}</i><span>${l}${t==='C'&&due()?' •':''}</span></button>`;
+  const sw=Object.keys(THEMES).map(k=>`<button class="sw${cur===k?' on':''}" aria-label="${k}" data-a="theme" data-t="${k}" style="background:linear-gradient(135deg,${THEMES[k][0]} 50%,${THEMES[k][1]} 50%)"></button>`).join('');
+  return `<div class="menu">${it('H','🏠','Dashboard')}${it('M','💵','Cash')}${it('N','➕','New entry')}${it('L','👥','People')}${it('Y','🕘','History')}${it('S','📷','Scan')}${it('I','📋','Import')}${it('C','✅','Check')}${window.ledraCloud?it('A','🔐','Account'):''}<div class="mpad two"><button class="btn alt" data-a="export">Backup</button><label class="btn alt">Restore<input type="file" accept=".json,application/json" data-imp hidden></label></div><div class="swr">${sw}</div>${hasC()?'':`<div class="mpad"><input id="k" type="password" placeholder="Claude API key" value="${esc(ls('hk_key')||'')}"><button class="btn alt" style="margin-top:8px" data-a="key">Save key</button></div>`}</div>`;
+}
+function draw(){
+  applyTheme();
+  const ps=people();
+  const p=ps.reduce((a,x)=>a+(x.bal>0?x.bal:0),0),o=ps.reduce((a,x)=>a+(x.bal<0?-x.bal:0),0),n=p-o;
+  const T={N:'New entry',L:'People',Y:'History',I:'Import',A:'Account',M:'Cash',S:'Scan',C:'Check'};
+  const view=tab==='S'?scanView():tab==='C'?checkView():tab==='N'?newView():tab==='M'?cashView():tab==='A'?accountView():tab==='I'?importView():tab==='Y'?histView():tab==='L'?(open?detailView():peopleView()):homeView(p,o,n);
+  const top=tab==='H'||(tab==='L'&&open)?'':`<div class="top"><button class="x" data-a="tab" data-t="H">←</button><h2>${T[tab]}</h2><span style="width:36px"></span></div>`;
+  const dot=due()?'<span style="position:absolute;top:2px;right:2px;width:9px;height:9px;border-radius:50%;background:var(--g1)"></span>':'';
+  $('#app').innerHTML=(menu?menuView():'')+top+(msg&&tab!=='S'?`<div class="msg">${esc(msg)}</div>`:'')+view;
+  const mb=document.querySelector('.tear');if(mb)mb.innerHTML='☰'+dot;
+  if(tab==='C')ckPaint();
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const a=b.dataset.a;
+  if(a==='menu'){menu=!menu;draw()}
+  else if(a==='tab'){tab=b.dataset.t;menu=false;open=null;arm=null;msg='';draw()}
+  else if(a==='open'){open=b.dataset.k;arm=null;msg='';draw()}
+  else if(a==='back'){open=null;arm=null;draw()}
+  else if(a==='add'){
+    const name=open?(people().find(x=>x.k===open)||{}).name:($('#n').value||'').trim();
+    const amt=Number($('#a').value);
+    if(!name||!(amt>0))return;
+    txs.push({id:Date.now(),name,amt:amt*Number(b.dataset.s),note:$('#o').value.trim(),date:today()});save();msg=open?'':'Added.';draw();
+  }
+  else if(a==='del'){
+    const id=Number(b.dataset.id);
+    if(arm===id){txs=txs.filter(t=>t.id!==id);delIds.push(id);arm=null;save()}else arm=id;
+    draw();
+  }
+  else if(a==='scan'){const f=$('#f').files;if(f&&f.length)scan([...f]);else{msg='Choose a photo first.';draw()}}
+  else if(a==='dx'){draft.splice(Number(b.dataset.i),1);draw()}
+  else if(a==='commit'){
+    const ok=draft.filter(d=>d.name.trim()&&d.amt>0);
+    ok.forEach((d,i)=>txs.push({id:Date.now()+i,name:d.name.trim(),amt:d.type==='RO'?-d.amt:d.amt,note:d.note,date:d.date||today()}));
+    save();draft=[];msg=ok.length+' saved.';draw();
+  }
+  else if(a==='ckadd'){const n=($('#xn').value||'').trim();if(n){ckExtra.push(n);draw()}}
+  else if(a==='ckclear'){ck={};ckExtra=[];draw()}
+  else if(a==='cksave'){
+    const s=$('#cksum');if(!s)return;
+    lset('hk_chk',JSON.stringify({date:new Date().toISOString(),per:ls('hk_per')||'W',ok:Number(s.dataset.ok),bad:Number(s.dataset.bad)}));
+    msg='Check saved.';draw();
+  }
+  else if(a==='theme'){lset('hk_theme',b.dataset.t);draw()}
+  else if(a==='txtimp'){
+    const lines=($('#ti').value||'').split('\n').map(l=>l.trim()).filter(Boolean);let n=0,bad=0;
+    lines.forEach((l,i)=>{
+      const m=l.match(/^(.*?)[\s,;:]+([+−-]?\s*\d[\d,]*(?:\.\d+)?)\s*$/);
+      if(!m||!m[1].trim()){bad++;return}
+      const amt=Number(m[2].replace(/[,\s]/g,'').replace('−','-'));
+      if(!amt){bad++;return}
+      txs.push({id:Date.now()+i,name:m[1].trim(),amt,note:'',date:today()});n++;
+    });
+    if(n)save();msg=n+' added'+(bad?', '+bad+' skipped':'')+'.';draw();
+  }
+  else if(a==='signin'||a==='signup'){
+    const em=($('#em').value||'').trim(),pw=$('#pw').value||'';
+    if(!em||!pw)return;
+    msg='Please wait…';draw();
+    window.ledraCloud[a==='signin'?'signIn':'signUp'](em,pw).then(()=>{msg='Signed in.';draw()}).catch(x=>{msg='Failed: '+String((x&&x.code)||'error').replace('auth/','');draw()});
+  }
+  else if(a==='signout'){window.ledraCloud.signOut().then(()=>{msg='Signed out.';draw()})}
+  else if(a==='syncnow'){msg='Syncing…';draw();window.ledraCloud.sync().then(()=>{msg='Synced.';draw()}).catch(()=>{msg='Sync failed.';draw()})}
+  else if(a==='setcash'){
+    const raw=$('#cs').value,v=Number(raw);
+    if(raw===''||isNaN(v))return;
+    cash0=v+txs.reduce((x,t)=>x+t.amt,0);cashT=Date.now();save();msg='Cash saved.';draw();
+  }
+  else if(a==='export'){menu=false;draw();exportData()}
+  else if(a==='key'){lset('hk_key',($('#k').value||'').trim());menu=false;msg='Key saved.';draw()}
+});
+document.addEventListener('input',e=>{
+  const i=e.target.dataset&&e.target.dataset.ck;if(i==null)return;
+  ck[key(ckRows[Number(i)])]=e.target.value;ckPaint();
+});
+document.addEventListener('change',e=>{
+  const t=e.target;if(!t.dataset)return;
+  if('imp' in t.dataset){if(t.files[0])importData(t.files[0]);return}
+  if('per' in t.dataset){lset('hk_per',t.value);draw();return}
+  const f=t.dataset.f;if(!f)return;
+  const d=draft[Number(t.dataset.i)];if(!d)return;
+  d[f]=f==='amt'?(Number(t.value)||0):t.value;
+});
+window.ledraApp={get:()=>({txs,del:delIds,open:cash0,openAt:cashT}),set:(t,d,o,oa)=>{txs=t;delIds=d;cash0=(o==null?null:o);cashT=oa||0;lset('hk2',JSON.stringify(txs));lset('hk_del',JSON.stringify(delIds));saveOpen();draw()},redraw:draw};
+if(window.LEDRA_CLOUD&&window.LEDRA_CLOUD.apiKey){const cs=document.createElement('script');cs.type='module';cs.src='cloud.js';document.head.appendChild(cs)}
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+draw();
+</script>
+</body>
+</html>
