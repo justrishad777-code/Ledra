@@ -5,7 +5,7 @@ import {getFirestore,doc,getDoc,setDoc} from 'https://www.gstatic.com/firebasejs
 const app=initializeApp(window.LEDRA_CLOUD);
 const auth=getAuth(app);
 const db=getFirestore(app);
-let user=null,timer=null,busy=false;
+let user=null,timer=null,busy=false,pending=false;
 
 // Union of entries from both sides, minus anything deleted on either side.
 export const merge=(a,b)=>{
@@ -16,7 +16,8 @@ export const merge=(a,b)=>{
 };
 
 async function sync(){
-  if(!user||busy)return;
+  if(!user)return;
+  if(busy){pending=true;return}
   busy=true;
   try{
     const ref=doc(db,'users',user.uid);
@@ -25,7 +26,10 @@ async function sync(){
     const m=merge(window.ledraApp.get(),remote);
     window.ledraApp.set(m.txs,m.del,m.open,m.openAt);
     await setDoc(ref,{data:JSON.stringify(m),updated:Date.now()});
-  }finally{busy=false}
+  }finally{
+    busy=false;
+    if(pending){pending=false;sync().catch(()=>{})}
+  }
 }
 
 window.ledraCloud={
